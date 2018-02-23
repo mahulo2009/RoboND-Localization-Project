@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>RoboND-Localization-Project</name>
+  <name>robokoko</name>
   <version>0.0.0</version>
-  <description>The RoboND-Localization-Project package</description>
+  <description>The robokoko package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/RoboND-Localization-Project</url> -->
+  <!-- <url type="website">http://wiki.ros.org/robokoko</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
