@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<launch>
+
+	<!-- Map server -->
+	<arg name="map_file" default="$(find robokoko)/maps/jackal_race.yaml"/>
+	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+	<!-- Place map frame at odometry frame -->
+	<node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster"
+	  args="0 0 0 0 0 0 map odom 100"/>
+
+	<!-- Localization-->
+	<node pkg="amcl" type="amcl" name="amcl" output="screen">
+		<remap from="scan" to="robokoko/laser/scan"/>
+
+		<!-- Overall Filter -->
+		<param name="min_particles" value="100"/>
+		<param name="max_particles" value="5000"/>
+		<param name="transform_tolerance" value="0.5"/>
+		<param name="recovery_alpha_slow" value="0.001"/>
+		<param name="recovery_alpha_fast" value="0.1"/>
+		<param name="initial_pose_x" value="0.0"/>
+		<param name="initial_pose_y" value="0.0"/>
+		<param name="initial_pose_a" value="0.0"/>
+		<param name="initial_cov_xx" value="0.25"/> 
+		<param name="initial_cov_yy" value="0.25"/>
+		<param name="initial_cov_aa" value="0.07"/>
+		<param name="gui_publish_rate" value="1"/>
+
+		<!-- Laser model -->
+		<param name="laser_likelihood_max_dist" value="2.0"/>
+		<param name="laser_model_type" value="likelihood_field"/>
+
+		<!-- Odom parameters -->
+		<param name="odom_model_type" value="diff-corrected"/>
+		<param name="odom_alpha1" value="0.005"/>
+		<param name="odom_alpha2" value="0.005"/>
+		<param name="odom_alpha3" value="0.010"/>
+		<param name="odom_alpha4" value="0.010"/>
+		<param name="odom_frame_id" value="odom"/>
+		<param name="base_frame_id" value="robot_footprint"/>
+		<param name="global_frame_id" value="map"/>
+
+	</node>
+
+	<!-- Move base -->
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+		<rosparam file="$(find robokoko)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+		<rosparam file="$(find robokoko)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+		<rosparam file="$(find robokoko)/config/local_costmap_params.yaml" command="load" />
+		<rosparam file="$(find robokoko)/config/global_costmap_params.yaml" command="load" />
+		<rosparam file="$(find robokoko)/config/base_local_planner_params.yaml" command="load" />
+
+		<remap from="cmd_vel" to="cmd_vel"/>
+		<remap from="odom" to="odom"/>
+		<remap from="scan" to="robokoko/laser/scan"/>
+
+		<param name="base_global_planner" type="string" value="navfn/NavfnROS" />
+		<param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS"/>
+	</node>
+
+</launch>

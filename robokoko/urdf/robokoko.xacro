@@ -2,7 +2,7 @@
 
 <robot name="robokoko" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-	<xacro:include filename="$(find udacity_bot)/urdf/udacity_bot.gazebo" />
+	<xacro:include filename="$(find robokoko)/urdf/robokoko.gazebo" />
 
 	<gazebo reference="chassis">
   	<material>Gazebo/Black</material>
