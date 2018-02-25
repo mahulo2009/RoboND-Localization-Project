@@ -8,6 +8,10 @@
   	<material>Gazebo/Black</material>
 	</gazebo>
 
+	<gazebo reference="camera">
+  	<material>Gazebo/Black</material>
+	</gazebo>
+
 	<gazebo reference="left_wheel">
   	<material>Gazebo/Yellow</material>
 	</gazebo>
@@ -219,6 +223,43 @@
 			<geometry>
 				<mesh filename="package://robokoko/meshes/hokuyo.dae"/>	
 			</geometry>
+		</visual>
+
+	</link>
+
+	<!-- Camera -->
+
+	<joint name="camera_joint" type="fixed" >
+		<parent link="chassis"/>
+		<child link="camera"/>
+		<origin xyz="0.11 0 0" rpy="0 0 0"/>
+	</joint>
+
+	<link name='camera'>
+
+		<inertial>
+			<mass value="0.1"/>
+			<origin xyz="0.0 0 0" rpy="0 0 0"/>
+			<inertia
+			  ixx="1e-6" ixy="0" ixz="0"
+			  iyy="1e-6" iyz="0"
+			  izz="1e-6"
+			/>
+		</inertial>
+
+		<collision name='collision'>
+			<origin xyz="0.0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<box size="0.02 0.1 0.02"/>
+			</geometry>
+		</collision>
+
+		<visual name='camera_visual'>
+			<origin xyz="0.0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<box size="0.02 0.1 0.02"/>
+			</geometry>
+			<material name="black"/>
 		</visual>
 
 	</link>
