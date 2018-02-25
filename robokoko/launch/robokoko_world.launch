@@ -22,4 +22,7 @@
 	<!--spawn a robot in gazebo world-->
 	<node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model myrobot"/>
 
+	<!-- Launch rviz -->
+	<node name="rviz" pkg="rviz" type="rviz" respawn="false"/>
+
 </launch>
