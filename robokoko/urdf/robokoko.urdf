@@ -53,7 +53,7 @@
     <child link="left_wheel"/>
     <axis rpy="0 0 0" xyz="0 1 0">
 		</axis>
-    <origin rpy="0 0 0" xyz="-0.03 0.065 0"/>
+    <origin rpy="0 0 0" xyz="0.03 0.065 0"/>
     <limit effort="10000" velocity="1000"/>
   </joint>
   <link name="left_wheel">
@@ -84,7 +84,7 @@
     <child link="right_wheel"/>
     <axis rpy="0 0 0" xyz="0 1 0">
 		</axis>
-    <origin rpy="0 0 0" xyz="-0.03 -0.065 0"/>
+    <origin rpy="0 0 0" xyz="0.03 -0.065 0"/>
     <limit effort="10000" velocity="1000"/>
   </joint>
   <link name="right_wheel">
@@ -118,7 +118,7 @@
     <child link="back_caster"/>
     <axis rpy="0 0 0" xyz="0 1 0">
 		</axis>
-    <origin rpy=" 0 0 0" xyz="0.09 0 -0.01"/>
+    <origin rpy=" 0 0 0" xyz="-0.09 0 -0.01"/>
     <limit effort="10000" velocity="1000"/>
   </joint>
   <link name="back_caster">

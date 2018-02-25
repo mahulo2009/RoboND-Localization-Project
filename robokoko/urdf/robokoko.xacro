@@ -2,7 +2,28 @@
 
 <robot name="robokoko" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+	<xacro:include filename="$(find udacity_bot)/urdf/udacity_bot.gazebo" />
+
+	<gazebo reference="chassis">
+  	<material>Gazebo/Black</material>
+	</gazebo>
+
+	<gazebo reference="left_wheel">
+  	<material>Gazebo/Yellow</material>
+	</gazebo>
+
+	<gazebo reference="right_wheel">
+  	<material>Gazebo/Yellow</material>
+	</gazebo>
+
+	<gazebo reference="back_caster">
+  	<material>Gazebo/Gray</material>
+	</gazebo>
+
   <link name="robot_footprint"></link>
+
+
+	<!-- Chassis  -->
 
   <joint name="robot_footprint_joint" type="fixed">
     <origin xyz="0 0 0" rpy="0 0 0" />
@@ -42,15 +63,16 @@
 
   </link>
 
+	<!-- Left Wheel  -->
+
 	<joint name="left_wheel_hinge" type="continuous" >
 		<parent link="chassis"/>
 		<child link="left_wheel"/>
 		<axis xyz="0 1 0" rpy="0 0 0">
 		</axis>
-		<origin xyz="-0.03 0.065 0" rpy="0 0 0"/>
+		<origin xyz="0.03 0.065 0" rpy="0 0 0"/>
     <limit effort="10000" velocity="1000"/>
 	</joint>
-
 
 	<link name='left_wheel'>
 
@@ -81,12 +103,14 @@
 
 	</link>
 
+	<!-- Right Wheel  -->
+
 	<joint name="right_wheel_hinge" type="continuous" >
 		<parent link="chassis"/>
 		<child link="right_wheel"/>
 		<axis xyz="0 1 0" rpy="0 0 0">
 		</axis>
-		<origin xyz="-0.03 -0.065 0" rpy="0 0 0"/>
+		<origin xyz="0.03 -0.065 0" rpy="0 0 0"/>
 		<limit effort="10000" velocity="1000"/>
 	</joint>
 
@@ -119,12 +143,14 @@
 
 	</link>
 
+	<!-- Back_caster  -->
+
 	<joint name="back_caster_joint" type="fixed" >
 		<parent link="chassis"/>
 		<child link="back_caster"/>
 		<axis xyz="0 1 0" rpy="0 0 0">
 		</axis>
-    <origin xyz="0.09 0 -0.01" rpy=" 0 0 0"/>
+    <origin xyz="-0.09 0 -0.01" rpy=" 0 0 0"/>
 		<limit effort="10000" velocity="1000"/>
 	</joint>
 
@@ -155,5 +181,42 @@
 		</visual>
 
 	</link>
+
+	<!-- Lidar -->
+
+	<joint name="hokuyo_joint" type="fixed" >
+		<parent link="chassis"/>
+		<child link="hokuyo"/>
+		<origin xyz="0.08 0 0.04" rpy="0 0 0"/>
+	</joint>
+
+	<link name='hokuyo'>
+
+		<inertial>
+			<mass value="0.1"/>
+			<origin xyz="0.0 0 0" rpy="0 0 0"/>
+			<inertia
+			  ixx="1e-6" ixy="0" ixz="0"
+			  iyy="1e-6" iyz="0"
+			  izz="1e-6"
+			/>
+		</inertial>
+
+		<collision name='collision'>
+			<origin xyz="0.0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<box size="0.1 0.1 0.1"/>
+			</geometry>
+		</collision>
+
+		<visual name='camera_visual'>
+			<origin xyz="0.0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://robokoko/meshes/hokuyo.dae"/>	
+			</geometry>
+		</visual>
+
+	</link>
+
 
 </robot>
