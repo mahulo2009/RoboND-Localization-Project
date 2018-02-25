@@ -23,6 +23,6 @@
 	<node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model myrobot"/>
 
 	<!-- Launch rviz -->
-	<node name="rviz" pkg="rviz" type="rviz" respawn="false"/>
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find robokoko)/launch/Rvizconfig.rviz" respawn="false" />
 
 </launch>
