@@ -2,9 +2,11 @@
 
 \usepackage[pdftex]{graphicx}    
 \usepackage{cite}
-\hyphenation{op-tical net-works semi-conduc-tor}
+\usepackage{subcaption}
 \usepackage{mathtools}
+\hyphenation{op-tical net-works semi-conduc-tor}
 \graphicspath{ {../images/} }
+
 
 \begin{document}
 
@@ -111,6 +113,27 @@ You should describe what you achieved for localization in the project with the b
 \subsubsection{Model design}
 The Robot's design considerations should include: the size of the robot, the layout of sensors. This information can be shown in the form of a chart / table.
 
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{robokoko-design-1}
+        \caption{A gull}
+        \label{fig:gull}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{robokoko-design-2}
+        \caption{A tiger}
+        \label{fig:tiger}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{robokoko-design-3}
+        \caption{A mouse}
+        \label{fig:mouse}
+    \end{subfigure}
+    \caption{Robot desing view}\label{fig:animals}
+\end{figure}
+
+
 \subsubsection{Packages Used}
 The packages used in the project should be specified as well as the topics received and published; the services it used and provided should also be addressed. 
 
@@ -118,27 +141,150 @@ The packages used in the project should be specified as well as the topics recei
 Localization parameters in the AMCL node should be described, as well as move\_base parameters in the configuration file. You should be able to clearly demonstrate your understanding of the impact of these parameters.
 
 \subsection{Personal Model}
-% ditto
+
 \subsubsection{Model design}
 
-\begin{figure}[t]
-\centering
-\subfigure{
-\includegraphics[width=.1\textwidth, height=0.15\textwidth]{robokoko-design-1}
-}
-\subfigure{
-\includegraphics[width=.2\textwidth, height=0.15\textwidth]{robokoko-design-2}
-}
-\subfigure{
-\includegraphics[width=.1\textwidth, height=0.15\textwidth]{robokoko-design-3}
-}
-\caption{blablabla}
-\label{fig:whatever}
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{robokoko-design-1}
+        \caption{A gull}
+        \label{fig:gull}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{robokoko-design-2}
+        \caption{A tiger}
+        \label{fig:tiger}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{robokoko-design-3}
+        \caption{A mouse}
+        \label{fig:mouse}
+    \end{subfigure}
+    \caption{Robot desing view}\label{fig:animals}
 \end{figure}
 
-\subsubsection{Packages Used}
-\subsubsection{Parameters}
+\begin{itemize}
+\item Chassis:
+\item Wheels:
+\item Back caster:
+\item Lidar:
+\item Camera:
+\end{itemize}
 
+\subsubsection{Packages Used}
+
+\begin{itemize}
+\item gazebo\_ros:
+\item rviz:
+\item map\_server:
+\item tf:
+\item amcl:
+\item move\_base: 
+\end{itemize}
+
+\subsubsection{Localization parameters: Overall Filter}
+
+The following configuration parameters were choosen due to power limitations of the computer where the package was deployed:
+
+\begin{itemize}
+\item min\_particles[100]: Minimum allowed number of particles spread around the scene.
+\item max\_particles[5000]: Maximum allowed number of particles spread around the scene. 
+\item transform\_tolerance[0.5]: Time with which to post-date the transform that is published, to indicate that this transform is valid into the future.
+\item gui\_publish\_rate[1]: Maximum rate (Hz) at which scans and paths are published for visualization.
+\end{itemize}
+
+The following configuration parameters are related about how to recover from stuck:
+
+\begin{itemize}
+\item recovery\_alpha\_slow[0.001]: Exponential decay rate for the slow average weight filter, used in deciding when to recover by adding random poses.   
+\item recovery\_alpha\_fast[0.1]: Exponential decay rate for the fast average weight filter, 
+used in deciding when to recover by adding random poses.
+\end{itemize}
+
+The following parameters give and estimation of the initial pose, mean and covariance, of the robot in the world; previous to any movement:
+
+\begin{itemize}
+\item initial\_pose\_x[0.0]: Initial pose mean (x), used to initialize filter with Gaussian distribution.
+\item initial\_pose\_y[0.0]: Initial pose mean (y), used to initialize filter with Gaussian distribution.
+\item initial\_pose\_a[0.0]: Initial pose mean (yaw), used to initialize filter with Gaussian distribution.
+\item initial\_cov\_xx[0.25]: Initial pose covariance (x*x), used to initialize filter with Gaussian distribution.
+\item initial\_cov\_yy[0.25]: Initial pose covariance (y*y), used to initialize filter with Gaussian distribution.
+\item initial\_cov\_aa[0.07]: Initial pose covariance (yaw*yaw), used to initialize filter with Gaussian distribution.
+\end{itemize}
+
+\end{itemize}
+\subsubsection{Localization parameters: Laser model}
+\begin{itemize}
+\item laser\_likelihood\_max\_dist[2.0]: Maximum distance to do obstacle inflation on map, for use in likelihood\_field model.
+\item laser\_model\_type[likelihood\_field]: Which model to use, either beam, likelihood\_field.
+\end{itemize}
+\subsubsection{Localization parameters: Odom parameters}
+\begin{itemize}
+\item odom\_model\_type[diff\-corrected]: Which model to use, either "diff", "omni", "diff-corrected" or "omni-corrected". In our case the robot is diff type, the corrected include a bug correction.
+\end{itemize}
+
+The following parameters are about the noise in the odemotry. Because we are using a Bayesian Filter the probability of the true value of the odometry can be tunned using these parameters. The values where obtanined by trail and error.
+
+\begin{itemize}
+\item odom\_alpha1[0.005]: Specifies the expected noise in odometry's rotation estimate from the rotational component of the robot's motion.
+\item odom\_alpha2[0.005]: Specifies the expected noise in odometry's rotation estimate from translational component of the robot's motion. 
+\item odom\_alpha3[0.010]: Specifies the expected noise in odometry's translation estimate from the translational component of the robot's motion. 
+\item odom\_alpha4[0.010]: Specifies the expected noise in odometry's translation estimate from the rotational component of the robot's motion.
+\end{itemize}
+
+\subsubsection{Move base parameters: costmap\_common\_params}
+
+The navigation stack uses costmaps to store information about the obstacles in the world.
+
+\begin{itemize}
+\item obstacle\_range[2.5]: The robot will only update its map with information about obstacles that are within 2.5 meters of the base.
+\item raytrace\_range[3.0]: This parameter determines the range to which we will raytrace freespace given a sensor reading. The robot will attempt to clear out space in front of it up to 3.0 meters away given a sensor reading.
+\item robot\_radius[0.11]: The robot radious is 11cm. It is used to avoid passing the robot through narrow places where it can get stucked.
+\item inflation\_radius[0.2]: The robot will treat all paths that stay 0.2 meters or more away from obstacles as having equal obstacle cost.
+\end{itemize}
+\subsubsection{Move base parameters: local\_costmap\_params}
+
+The local costmap is used by the local planner to generate a short-term plan. The local costmap uses the odometry information.
+
+\begin{itemize}
+\item robot\_base\_frame: 
+\item update\_frequency[2]: The frequency, in Hz, at which the costmap will run its update loop. 
+\item publish\_frequency[2]: The rate, in Hz, at which the costmap will publish visualization information.
+\item width[20.0]: The width of the costmap.
+\item height[20.0]: The height of the costmap.
+\item resolution[0.05]: The resolution of the costmap.
+\item static\_map[false]: The costmap should not initialize itself based on a map served by the map\_server, for the local costmap the odometry is used.
+\item rolling\_window:
+\item transform\_tolerance:
+\end{itemize}
+
+\subsubsection{Move base parameters: global\_costmap\_params}
+\begin{itemize}
+\item robot\_base\_frame:
+\item update\_frequency:
+\item publish\_frequency:
+\item width:
+\item height:
+\item resolution:
+\item static\_map:
+\item rolling\_window:
+\item transform\_tolerance:
+\end{itemize}
+
+\subsubsection{Move base parameters: base\_local\_planner\_params}
+\begin{itemize}
+\item holonomic\_robot:
+\item sim\_time:
+\item meter\_scoring::
+\item max\_vel\_x:
+\item min\_vel\_x:
+\item max\_vel\_theta:
+\item min\_vel\_theta:
+\item acc\_lim\_x:
+\item acc\_lim\_y:
+\item acc\_lim\_theta:
+\end{itemize}
 
 \section{Results}
 Present an unbiased view of your robot's performance and justify your stance with facts. Do the localization results look reasonable? What is the duration for the particle filters to converge? How long does it take for the robot to reach the goal? Does it follow a smooth path to the goal? Does it have unexpected behavior in the process? \\
@@ -161,7 +307,7 @@ This is the only section of the report where you may include your opinion. Howev
 \item How would you approach the 'Kidnapped Robot' problem?
 \item What types of scenario could localization be performed?
 \item Where would you use MCL/AMCL in an industry domain?
-\end {itemize}
+\end{itemize}
 
 \section{Conclusion / Future work}
 This section is intended to summarize your report. Your summary should include a recap of the results, did this project achieve what you attempted, how would you deploy it on hardware and how could this project be applied to commercial products? 
