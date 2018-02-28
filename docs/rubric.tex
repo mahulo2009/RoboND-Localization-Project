@@ -48,6 +48,7 @@ In the present work Kalman filter and Adaptative Monte Carlo have been evaluated
 They are both base on probability distribution of the states over measurements using a Bayes filter. 
 
 Adaptive Monte Carlo algorithm has been selected in order to solve the Localization problem. AMCL, a particle filter, has got so many advantages over other solutions: the error and noise does not need to follow a Gaussian distribution, the computational needs can be easily adapted, it is a very robust and fast algorithm.\cite{lamport1994latex}
+
 \subsection{Kalman Filters}
 
 Kalman filter was invented by Rudolf Kalman and it was used to solve non-linear problem of the trajectory estimation of the Apollo program. It helped to the Apollo to orbit around the moon. 
@@ -95,12 +96,16 @@ In the present work MCL particle filter is going to be used.
 
 
 \section{Simulations}
-This section should discuss the performance of robots in simulation. Items to include are the robot model design, packages used, and the parameters chosen for the robot to properly localize itself. The information provided here is critical if anyone would like to replicate your results. After all, the intent of reports such as these are to convey information and build upon ideas so you want to ensure others can validate your process.
-You should have at least two images here: one that shows your standard robot used in the first part of the project, and a second robot that you modified / built that is different from the first robot. Remember to watermark all of your images as well. 
+The simulation environment selected was Gazebo, connected to ROS a Rviz to visualize the performance of the solution. 
+
+ROS is a meta-operating system for robotic. It provides a broad collection of libraries, in the form of packages, that implement useful robot functionality. ROS provides publish-subscribe messaging infrastructure that allows easily integrate different package to implement the particular solution.
+
+The following sections will explain in details the robot's model, selected packages, and the parameter tunning to allow the robot to properly localize itself.
 
 \subsection{Achievements}
-You should describe what you achieved for localization in the project with the benchmark model and your own model. Includes charts and graphs show how parameters affect your performance. 
+Two different models have been evaluated: one provided by Udacity and other built from scratch.
 
+The following sections include the model design for each one, the package used to create the navigation stack and the parameters selected, with its meaning, in order to obtain the desire performance.
 % Robot Models
 \subsection{Benchmark Model}
 
@@ -178,18 +183,22 @@ Localization parameters in the AMCL node should be described, as well as move\_b
 \item move\_base: 
 \end{itemize}
 
-\subsubsection{Localization parameters: Overall Filter}
+\subsubsection{Parameters}
 
-The following configuration parameters were choosen due to power limitations of the computer where the package was deployed:
+\paragraph{Localization parameters}
+
+The package for localization used was AMCL. There are several parameters to be tuned:
+
+The following configuration parameters were chosen due to power limitations of the computer where packages were deployed, increasing this values may produced a better performance.
 
 \begin{itemize}
 \item min\_particles[100]: Minimum allowed number of particles spread around the scene.
 \item max\_particles[5000]: Maximum allowed number of particles spread around the scene. 
-\item transform\_tolerance[0.5]: Time with which to post-date the transform that is published, to indicate that this transform is valid into the future.
+\item transform\_tolerance[0.5]: It is used to make a transformation valid in the future in order to cover lag in the system. Reducing this value improve performance but it is necessary to have computer power enough.
 \item gui\_publish\_rate[1]: Maximum rate (Hz) at which scans and paths are published for visualization.
 \end{itemize}
 
-The following configuration parameters are related about how to recover from stuck:
+Parameters related to how recovering from stuck:
 
 \begin{itemize}
 \item recovery\_alpha\_slow[0.001]: Exponential decay rate for the slow average weight filter, used in deciding when to recover by adding random poses.   
@@ -197,7 +206,7 @@ The following configuration parameters are related about how to recover from stu
 used in deciding when to recover by adding random poses.
 \end{itemize}
 
-The following parameters give and estimation of the initial pose, mean and covariance, of the robot in the world; previous to any movement:
+The following parameters give and estimation of the initial pose, mean and covariance, of the robot in the world, previous to any movement:
 
 \begin{itemize}
 \item initial\_pose\_x[0.0]: Initial pose mean (x), used to initialize filter with Gaussian distribution.
@@ -208,18 +217,15 @@ The following parameters give and estimation of the initial pose, mean and covar
 \item initial\_cov\_aa[0.07]: Initial pose covariance (yaw*yaw), used to initialize filter with Gaussian distribution.
 \end{itemize}
 
-\end{itemize}
-\subsubsection{Localization parameters: Laser model}
+Parameters related to the Laser and model configuration:
+
 \begin{itemize}
 \item laser\_likelihood\_max\_dist[2.0]: Maximum distance to do obstacle inflation on map, for use in likelihood\_field model.
 \item laser\_model\_type[likelihood\_field]: Which model to use, either beam, likelihood\_field.
-\end{itemize}
-\subsubsection{Localization parameters: Odom parameters}
-\begin{itemize}
 \item odom\_model\_type[diff\-corrected]: Which model to use, either "diff", "omni", "diff-corrected" or "omni-corrected". In our case the robot is diff type, the corrected include a bug correction.
 \end{itemize}
 
-The following parameters are about the noise in the odemotry. Because we are using a Bayesian Filter the probability of the true value of the odometry can be tunned using these parameters. The values where obtanined by trail and error.
+The following parameters are about the noise in odemotry measurement. Because we are using a Bayesian Filter the probability of true values of odometry can be tuned using these parameters. These values where obtained by trail and error.
 
 \begin{itemize}
 \item odom\_alpha1[0.005]: Specifies the expected noise in odometry's rotation estimate from the rotational component of the robot's motion.
@@ -228,57 +234,61 @@ The following parameters are about the noise in the odemotry. Because we are usi
 \item odom\_alpha4[0.010]: Specifies the expected noise in odometry's translation estimate from the rotational component of the robot's motion.
 \end{itemize}
 
-\subsubsection{Move base parameters: costmap\_common\_params}
+\paragraph{Move base parameters}
 
-The navigation stack uses costmaps to store information about the obstacles in the world.
+The navigation stack uses cost-maps to store information about the obstacles in the world.
+
+
+Costmap common parameters:
 
 \begin{itemize}
 \item obstacle\_range[2.5]: The robot will only update its map with information about obstacles that are within 2.5 meters of the base.
 \item raytrace\_range[3.0]: This parameter determines the range to which we will raytrace freespace given a sensor reading. The robot will attempt to clear out space in front of it up to 3.0 meters away given a sensor reading.
-\item robot\_radius[0.11]: The robot radious is 11cm. It is used to avoid passing the robot through narrow places where it can get stucked.
+\item robot\_radius[0.11]: The robot radius is 11cm. It's used to avoid passing the robot through narrow places where it can get stuck.
 \item inflation\_radius[0.2]: The robot will treat all paths that stay 0.2 meters or more away from obstacles as having equal obstacle cost.
 \end{itemize}
-\subsubsection{Move base parameters: local\_costmap\_params}
 
-The local costmap is used by the local planner to generate a short-term plan. The local costmap uses the odometry information.
+The local costmap is used by the local planner to generate a short-term plan. The local costmap uses the odometry information rather than a map.
 
 \begin{itemize}
 \item robot\_base\_frame: 
-\item update\_frequency[2]: The frequency, in Hz, at which the costmap will run its update loop. 
-\item publish\_frequency[2]: The rate, in Hz, at which the costmap will publish visualization information.
-\item width[20.0]: The width of the costmap.
-\item height[20.0]: The height of the costmap.
-\item resolution[0.05]: The resolution of the costmap.
+\item update\_frequency[2]: The frequency, in Hz, at which the cost-map will run its update loop. 
+\item publish\_frequency[2]: The rate, in Hz, at which the cost-map will publish visualization information.
+\item width[20.0]: The cost-map's width.
+\item height[20.0]: The cost-map's height.
+\item resolution[0.05]: The cost-map's resolution.
 \item static\_map[false]: The costmap should not initialize itself based on a map served by the map\_server, for the local costmap the odometry is used.
-\item rolling\_window:
-\item transform\_tolerance:
+\item rolling\_window[true]:  the robot only cares about obstacles within a local area.
+\item transform\_tolerance[0.5]: Specifies the delay in transform (tf) data that is tolerable in seconds.
 \end{itemize}
 
-\subsubsection{Move base parameters: global\_costmap\_params}
+The global costmap is used by the local planner to generate a long-term plan. The global costmap uses the map provided by the map\_server.
+
 \begin{itemize}
 \item robot\_base\_frame:
-\item update\_frequency:
-\item publish\_frequency:
-\item width:
-\item height:
-\item resolution:
-\item static\_map:
-\item rolling\_window:
-\item transform\_tolerance:
+\item update\_frequency[2]: The frequency, in Hz, at which the cost-map will run its update loop. 
+\item publish\_frequency[2]: The rate, in Hz, at which the cost-map will publish visualization information.
+\item width[40.0]: The cost-map's width.
+\item height[40.0]:The cost-map's height.
+\item resolution[0.05]: The cost-map's resolution.
+\item static\_map[true]: The costmap should initialize itself based on a map served by the map\_server.
+\item rolling\_window[false]: for global localization this parameter must set to false.
+\item transform\_tolerance[0.5]: Specifies the delay in transform (tf) data that is tolerable in seconds. 
 \end{itemize}
 
-\subsubsection{Move base parameters: base\_local\_planner\_params}
+This package provides implementations of the Trajectory Rollout and Dynamic Window approaches to local robot navigation on a plane. Given a plan to follow and a costmap, the controller produces velocity commands to send to the robot.
+
 \begin{itemize}
-\item holonomic\_robot:
-\item sim\_time:
-\item meter\_scoring::
-\item max\_vel\_x:
-\item min\_vel\_x:
-\item max\_vel\_theta:
-\item min\_vel\_theta:
-\item acc\_lim\_x:
-\item acc\_lim\_y:
-\item acc\_lim\_theta:
+\item holonomic\_robot[false]: Determines whether velocity commands are generated for a holonomic or non-holonomic robot. Our model is not holonomic.
+\item sim\_time[2.0]: The amount of time to forward-simulate trajectories in seconds. This values was selected due to computer power restrictions.
+\item meter\_scoring[true]: Whether the gdist\_scale and pdist\_scale parameters should assume that goal\_distance and path\_distance are expressed in units of meters or cells.
+\item max\_vel\_x[0.4]: The maximum forward velocity allowed for the base in meters/sec.
+\item min\_vel\_x[0.1]: The minimum forward velocity allowed for the base in meters/sec.
+\item max\_vel\_theta[0.7]: The maximum rotational velocity allowed for the base in radians/sec.
+\item min\_vel\_theta[-0.7]: The minimum rotational velocity allowed for the base in radians/sec.
+\item acc\_lim\_x[0.6]: The x acceleration limit of the robot in meters/sec\^2.
+\item acc\_lim\_y[0.6]: The y acceleration limit of the robot in meters/sec\^2.
+\item acc\_lim\_theta[1.5]: The rotational acceleration limit of the robot in radians/sec\^2.
 \end{itemize}
 
 \section{Results}
@@ -296,6 +306,7 @@ Discuss the difference of the layout, parameters, performance etc. between the b
 This is the only section of the report where you may include your opinion. However, make sure your opinion is based on facts. If your robot performed poorly, make mention of what may be the underlying issues. If the robot runs well, which aspects contribute to that? Again, avoid writing in the first person (i.e. Do not use words like "I" or "me"). If you really find yourself struggling to avoid the word "I" or "me"; sometimes, this can be avoid with the use of the word “one”. As an example: instead of : "I think the robot cannot localize itself because the sensor does not provide enough information for localization" try: "one may believe the localization performance is poor because the sensor layout is not able to provide enough information for localization". They say the same thing, but the second avoids the first person. 
 
 \subsection{Topics}
+
 \begin{itemize}
 \item Which robot performed better?
 \item Why it performed better? (opinion)
@@ -310,6 +321,7 @@ For Future Work, address areas of work that you may not have addressed in your r
 
 \subsection{Modifications for Improvement}
 Examples:
+
 \begin{itemize}
 \item Base Dimension
 \item Sensor Location
@@ -318,6 +330,7 @@ Examples:
 \end{itemize}
 
 \subsection{Hardware Deployment}
+
 \begin{enumerate}
 \item What would need to be done?
 \item Computation time/resource considerations?

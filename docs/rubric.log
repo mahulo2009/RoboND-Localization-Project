@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2018.2.20)  28 FEB 2018 08:04
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2018.2.20)  28 FEB 2018 09:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -409,21 +409,21 @@ LaTeX Warning: Citation `lamport1994latex' on page 1 undefined on input line 50
 .
 
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <9.53561> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 51.
-LaTeX Font Info:    Calculating math sizes for size <9.53561> on input line 61.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 52.
+LaTeX Font Info:    Calculating math sizes for size <9.53561> on input line 62.
 
 [1{/usr/share/texlive/texmf-dist/fonts/map/pdftex/updmap/pdftex.map}
 
 
 ]
 LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <9.53561> not available
-(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 108.
+(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 113.
 
 <../images/robokoko-design-1.png, id=18, 321.2pt x 296.10625pt>
 File: ../images/robokoko-design-1.png Graphic file (type png)
 
 <use ../images/robokoko-design-1.png>
-Package pdftex.def Info: ../images/robokoko-design-1.png used on input line 114
+Package pdftex.def Info: ../images/robokoko-design-1.png used on input line 119
 .
 (pdftex.def)             Requested size: 155.38206pt x 143.24538pt.
 
@@ -431,7 +431,7 @@ Package pdftex.def Info: ../images/robokoko-design-1.png used on input line 114
 File: ../images/robokoko-design-2.png Graphic file (type png)
 
 <use ../images/robokoko-design-2.png>
-Package pdftex.def Info: ../images/robokoko-design-2.png used on input line 119
+Package pdftex.def Info: ../images/robokoko-design-2.png used on input line 124
 .
 (pdftex.def)             Requested size: 155.38206pt x 84.83478pt.
 
@@ -439,68 +439,62 @@ Package pdftex.def Info: ../images/robokoko-design-2.png used on input line 119
 File: ../images/robokoko-design-3.png Graphic file (type png)
 
 <use ../images/robokoko-design-3.png>
-Package pdftex.def Info: ../images/robokoko-design-3.png used on input line 124
+Package pdftex.def Info: ../images/robokoko-design-3.png used on input line 129
 .
 (pdftex.def)             Requested size: 155.38206pt x 201.9465pt.
 File: ../images/robokoko-design-1.png Graphic file (type png)
  <use ../images/robokoko-design-1.png>
-Package pdftex.def Info: ../images/robokoko-design-1.png used on input line 145
+Package pdftex.def Info: ../images/robokoko-design-1.png used on input line 150
 .
 (pdftex.def)             Requested size: 155.38206pt x 143.24538pt.
 File: ../images/robokoko-design-2.png Graphic file (type png)
 
 <use ../images/robokoko-design-2.png>
-Package pdftex.def Info: ../images/robokoko-design-2.png used on input line 150
+Package pdftex.def Info: ../images/robokoko-design-2.png used on input line 155
 .
 (pdftex.def)             Requested size: 155.38206pt x 84.83478pt.
 File: ../images/robokoko-design-3.png Graphic file (type png)
  <use ../images/robokoko-design-3.png>
-Package pdftex.def Info: ../images/robokoko-design-3.png used on input line 155
+Package pdftex.def Info: ../images/robokoko-design-3.png used on input line 160
 .
 (pdftex.def)             Requested size: 155.38206pt x 201.9465pt.
 
 [2 <../images/robokoko-design-1.png> <../images/robokoko-design-2.png> <../imag
 es/robokoko-design-3.png>]
-Underfull \hbox (badness 1424) in paragraph at lines 192--193
-[]\OT1/ppl/m/n/9.53561 The fol-low-ing con-fig-u-ra-tion pa-ram-e-ters are re-l
-ated
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 208--209
+Underfull \hbox (badness 10000) in paragraph at lines 217--218
 []\OT1/ppl/m/n/9.53561 initial[]cov[]aa[0.07]: Ini-tial pose co-vari-ance
  []
 
-
-! LaTeX Error: \begin{document} ended by \end{itemize}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.211 \end{itemize}
-                   
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Extra \endgroup.
-<recently read> \endgroup 
-                          
-l.211 \end{itemize}
-                   
-Things are pretty mixed up, but I think the worst is over.
-
 [3]
+Underfull \hbox (badness 10000) in paragraph at lines 284--285
+[]\OT1/ppl/m/n/9.53561 meter[]scoring[true]: Whether the gdist[]scale
+ []
+
+
+Underfull \hbox (badness 1466) in paragraph at lines 284--285
+\OT1/ppl/m/n/9.53561 and pdist[]scale pa-ram-e-ters should as-sume that
+ []
+
 Missing character: There is no ‚ in font pplr7t!
 Missing character: There is no Ä in font pplr7t!
 Missing character: There is no ú in font pplr7t!
 Missing character: There is no ‚ in font pplr7t!
 Missing character: There is no Ä in font pplr7t!
 Missing character: There is no ù in font pplr7t!
- [4]
-No file rubric.bbl.
-[5
+[4] (./rubric.bbl
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3 \end{thebibliography}
+                         
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+) [5
 
 ] (./rubric.aux)
 
@@ -511,8 +505,8 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 4810 strings out of 493069
- 78402 string characters out of 6138222
+ 4812 strings out of 493069
+ 78427 string characters out of 6138222
  154945 words of memory out of 5000000
  8277 multiletter control sequences out of 15000+600000
  45977 words of font info for 98 fonts, out of 8000000 for 9000
@@ -531,7 +525,7 @@ texlive/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb></usr/share/texlive/tex
 mf-dist/fonts/type1/urw/palatino/uplb8a.pfb></usr/share/texlive/texmf-dist/font
 s/type1/urw/palatino/uplr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/
 zapfding/uzdr.pfb>
-Output written on rubric.pdf (5 pages, 172460 bytes).
+Output written on rubric.pdf (5 pages, 172353 bytes).
 PDF statistics:
  80 PDF objects out of 1000 (max. 8388607)
  53 compressed objects within 1 object stream
