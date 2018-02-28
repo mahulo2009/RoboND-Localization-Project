@@ -10,7 +10,7 @@
 
 \begin{document}
 
-\title{Robo Nano Degree: Localization Project }
+\title{Robotics Software Engineer Nanodegree: Localization Project}
 
 \author{Manuel Huertas L\'opez}
 
@@ -19,61 +19,56 @@
 \IEEEtitleabstractindextext{%
 
 \begin{abstract}
-
 This project involves to accurately localize a mobile robot insided a provided map in Gazebo and RViz simulation enviroments. The goal includes to build a robot model in Gazebo and utilize packages like AMCL and the Navigation Stack to succefully identifed the position of the robot in the world. As a final test the robot will be commaned to a specific location and the navigation stack will determinate the route to follow. As part of the work it is neccessary to explore, add, and tunning specific parameters corresponding to each package to achieve the best possible localization result.
-
-
 \end{abstract}
 
 
 \begin{IEEEkeywords}
-Robot, Udacity, Monte Carlo Filter, Kalman Filter, Localization.
+Robot, Udacity, Monte Carlo Filter, Kalman Filter, Localization,ROS.
 \end{IEEEkeywords}}
 
 
 \maketitle
 \IEEEdisplaynontitleabstractindextext
 \IEEEpeerreviewmaketitle
+
 \section{Introduction}
 \label{sec:introduction}
-
 \IEEEPARstart{M}{obile} robot localization is the process to determine where a robot is located with respect to its environment. It is one of the fundamental parts required by a robot to achieve autonomous navigation.
 
-In its simplest form, position tracking, the initial robot pose is known and it is only necessary to correct incremental errors in the robot odometry. More challenging is the global localization problem, where the robot must determinate its initial pose by itself. Finally, in the kidnapped robot problem the robot is tele-ported to other position without beaing told. The kidnapped problem can be used to teach the robot how to recover from a system fail, where the robot prevoius knowlegde is complety lost.
+In its simplest form, position tracking, the initial robot pose is known and it is only necessary to correct incremental errors in the robot odometry. More challenging is the global localization problem, where the robot must determinate its initial pose by itself. Finally, in the kidnapped robot problem, the robot is tele-ported to other position without being told. The kidnapped problem can be used to teach the robot how to recover from a system fail, where the robot previous knowledge is complete lost.
 
 Localization can be used in so many applications ranging from robots to clean the floors to robot to explore other planets.
 
-The localization algorithms must overcome some difficulties like the errors in the sensor measurement: both odometry sensor and sensor to measure the distances in the scene. The algorithm used for the project use bayesian probability to evaluate the probability of a hipothesis, where the robot is located, base on the observation of the environment.
-
+The localization algorithms must overcome some difficulties like the errors in sensor measurement; like sensors to measure the distances in scene, and errors in the control. The algorithm used for the project use Bayesian probability to evaluate the probability of a hypothesis, where the robot is located, base on the observation of the environment.
 
 \section{Background}
+In the present work Kalman filter and Adaptative Monte Carlo have been evaluated. 
 
+They are both base on probability distribution of the states over measurements using a Bayes filter. 
 
-At this stage, you should begin diving into the technical details of your approach by explaining to the reader what are the characteristics of the filters, what localization method was chosen, and the reason that it was selected (i.e. particle filters). 
-This should be factual and authoritative, meaning you should not use language such as "I think this will work" or "Maybe Monte Carlo Localization with these parameters is better...". Instead, focus on items similar to, "Adaptive Monte Carlo Localization was chosen because..."
-Provide a sufficient background into the scope of the problem technologically while also identifying some of the current challenges in robot localization and why the problem domain is an important piece of robotics.\cite{lamport1994latex}
-
+Adaptive Monte Carlo algorithm has been selected in order to solve the Localization problem. AMCL, a particle filter, has got so many advantages over other solutions: the error and noise does not need to follow a Gaussian distribution, the computational needs can be easily adapted, it is a very robust and fast algorithm.\cite{lamport1994latex}
 \subsection{Kalman Filters}
 
 Kalman filter was invented by Rudolf Kalman and it was used to solve non-linear problem of the trajectory estimation of the Apollo program. It helped to the Apollo to orbit around the moon. 
 
-Kalman filter is an estimation algorithm used to estimate the value of a variable as the data is being collected. It can take data, from sensors, with a lot of uncertainty or noise in measurements and provide a very accuate estimate of the real value. It can do it fast and without needing too much computer power. 
+Kalman filter is an estimation algorithm used to estimate the value of a variable as the data is being collected. It can take data, from sensors, with a lot of uncertainty or noise in measurements and provides a very accurate estimate of the real value. It can do fast and without needing too much computer power. 
 
-Kalman filter can be used for local localization problem where both the odometry and the movement contains a lot of noise and uncertains. The Kalman filter is continuosly iterating two steps: measurement update where the measurement is used to update the robot's position, and state prediction where the information about the current state is used to predict the future pose. At the beginning an initial guess is used. After a few iterations the measurement converge to the real value.
+Kalman filter can be used for local localization problem where both the odometry and movement contains a lot of noise and uncertain. The Kalman filter is continuously iterating two steps: measurement update where measurement is used to update the robot's position, and state prediction where the information about current state is used to predict the future pose. At the beginning an initial guess is used. After a few iterations the measurement converge to the real value.
 
-The Kalma filter assumes a Gaussian distribution of the noise an uncertaions and it is only valid for linear system.
+The Kalma filter assumes a Gaussian distribution of the noise an uncertain and it is only valid for linear system.
 
 \begin{align}
 P(x) = \frac{1}{{\sigma \sqrt {2\pi } }}e^{{{ - \left( {x - \mu } \right)^2 } \mathord{\left/ {\vphantom {{ - \left( {x - \mu } \right)^2 } {2\sigma ^2 }}} \right. \kern-\nulldelimiterspace} {2\sigma ^2 }}}
 \end{align}
 
-Nevertheless, a variation of the algorithm, the Extended Kalman filter can be used for nonlinear system. The EKF linearize the original nonlinear filter dynamics around the previous estimates.
+Nevertheless, a variation of the algorithm, Extended Kalman filter can be used for non-linear system. The EKF linearise the original non-linear filter dynamics around the previous estimates.
 
 \subsection{Particle Filters}
 
-The Monte Carlo localization is the most popular localization algorithm in robotics. It can solve the local an global localization problems. The robot will navigate inside a known map collecting information using range sensors. MCL uses these sensor measurement to keep track of the robot pose. 
+The Monte Carlo localization is the most popular Localization algorithm in robotics. It can solve the local an global localization problems. The robot will navigate inside a known map collecting information using range sensors. MCL uses these sensor measurement to keep track of the robot pose. 
 
-In MCL a set of particles are initially spread randomly and uniformly throughout the entire map. These virtual particles represents the hypothesis of whre the robot might be. In a 2D map, each particle has got a position , orientation and weight value. The importance of the particle depends on the weight, the bigger the more accurate and during the resamping process they are more likely to survive. After several iterations of the Monte Carlo algorithm the particles will converge and estimate the robot's pose.
+In MCL a set of particles are initially spread randomly and uniformly throughout the entire map. These virtual particles represents the hypothesis of where the robot might be. In a 2D map, each particle has got a position , orientation and weight value. The importance of a particle depends on the weight, the bigger the more accurate and during the re-sampling process they are more likely to survive. After several iterations of the Monte Carlo algorithm the particles will converge and estimate the robot's pose.
 
 The MCL uses a Bayes filtering to estimate a probability density over the state space conditioned by the measurement, this probability density is called belief:
 
@@ -81,22 +76,22 @@ The MCL uses a Bayes filtering to estimate a probability density over the state 
 Bel(X{t}) = P(X{t} |Z{1}...{t} )
 \end{align}
 
-X{t} are the state of the robot and Z are the measurement from time 1 up to time {t}. The belief is estimated recursivelly, the initial guess uses a randomly and uniformly distribution over the entire map.
+X{t} are the state of robot and Z are the measurement from time 1 up to time {t}. The belief is estimated recursively, the initial guess uses a randomly and uniformly distribution over the entire map.
 
-The MCL has got two sections. In every iteration the algorithm takes the previous belief, the actuaion commands and the sensor measurement as input. The hypothetical state is computed whenever the robot moves, the particles weight are computed using the latest sensor measurement. Secondly the particles with high probability, the ones that fetch better the measurement reading, will survive and the others will die. The algorithm will output the new beliefe of the next iteration. After few iteration the survivors particles will represent the real robot's pose.
+The MCL has got two sections. In every iteration the algorithm takes: previous belief, the actuation commands and the sensor measurement as input. The hypothetical state is computed whenever the robot moves, the particles weight are computed using the latest sensor measurement. Secondly the particles with high probability, the ones that fetch better the measurement reading, will survive and the others will die. The algorithm will output the new belief of the next iteration. After few iterations the survivors particles will represent the real robot's pose.
 
 
 \subsection{Comparison / Contrast}
 
-MCL presents many adventages over EFK:
+MCL presents many advantages over EFK:
 
 \begin{itemize}
 \item MCL is easier to program than EFK 
-\item In the EFK algorithm the noise error and uncertaions must follow a gaussian distribution, MCL is not tied to the measure noise distribution.
+\item In the EFK algorithm the noise error and uncertain must follow a Gaussian distribution, MCL is not tied to the measure noise distribution.
 \item MCL can control the computational memory and resolution of the solution by changing the number of particles distributed.
 \end{itemize} 
 
-In the present work the particle filter is going to be used.
+In the present work MCL particle filter is going to be used.
 
 
 \section{Simulations}
