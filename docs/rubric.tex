@@ -134,11 +134,6 @@ The Robot's design considerations should include: the size of the robot, the lay
 \end{figure}
 
 
-\subsubsection{Packages Used}
-The packages used in the project should be specified as well as the topics received and published; the services it used and provided should also be addressed. 
-
-\subsubsection{Parameters}
-Localization parameters in the AMCL node should be described, as well as move\_base parameters in the configuration file. You should be able to clearly demonstrate your understanding of the impact of these parameters.
 
 \subsection{Personal Model}
 
@@ -172,7 +167,7 @@ Localization parameters in the AMCL node should be described, as well as move\_b
 \item Camera:
 \end{itemize}
 
-\subsubsection{Packages Used}
+\subsection{Packages Used}
 
 \begin{itemize}
 \item gazebo\_ros:
@@ -183,9 +178,9 @@ Localization parameters in the AMCL node should be described, as well as move\_b
 \item move\_base: 
 \end{itemize}
 
-\subsubsection{Parameters}
+\subsection{Parameters}
 
-\paragraph{Localization parameters}\mbox{} \\
+\subsubsection{Localization parameters}
 
 The following configuration parameters were chosen due to power limitations of the computer where packages were deployed, increasing this values may produced a better performance.
 
@@ -240,7 +235,7 @@ Parameters to configure the different frames names.
 \item global\_frame\_id[map]: The name of the coordinate frame published by the localization system.
 \end{itemize}
 
-\paragraph{Move base parameters}\mbox{} \\
+\subsubsection{Move base parameters}
 
 The navigation stack uses cost-maps to store information about the obstacles in the world.
 
@@ -258,7 +253,7 @@ Costmap common parameters:
 
 The local costmap is used by the local planner to generate a short-term plan. The local costmap uses the odometry information rather than a map.
 
-In order to insert data from sensor sources into the costmap an extensive use of tf is used. Specifically, it assumes that all transforms between the coordinate frames specified by the global_frame parameter, the robot_base_frame parameter, and sensor sources are connected and up-to-date. 
+In order to insert data from sensor sources into the costmap an extensive use of tf is used. Specifically, it assumes that all transforms between the coordinate frames specified by the global\_frame parameter, the robot\_base\_frame parameter, and sensor sources are connected. 
 
 \begin{itemize}
 \item global\_frame[odom]: The global frame for the costmap to operate in.
