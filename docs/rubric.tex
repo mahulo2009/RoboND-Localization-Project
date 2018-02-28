@@ -185,9 +185,7 @@ Localization parameters in the AMCL node should be described, as well as move\_b
 
 \subsubsection{Parameters}
 
-\paragraph{Localization parameters}
-
-The package for localization used was AMCL. There are several parameters to be tuned:
+\paragraph{Localization parameters}\mbox{} \\
 
 The following configuration parameters were chosen due to power limitations of the computer where packages were deployed, increasing this values may produced a better performance.
 
@@ -234,7 +232,15 @@ The following parameters are about the noise in odemotry measurement. Because we
 \item odom\_alpha4[0.010]: Specifies the expected noise in odometry's translation estimate from the rotational component of the robot's motion.
 \end{itemize}
 
-\paragraph{Move base parameters}
+Parameters to configure the different frames names.
+
+\begin{itemize}
+\item odom\_frame\_id[odom]: Which frame to use for odometry.
+\item base\_frame\_id[robot\_footprint]: Which frame to use for the robot base.
+\item global\_frame\_id[map]: The name of the coordinate frame published by the localization system.
+\end{itemize}
+
+\paragraph{Move base parameters}\mbox{} \\
 
 The navigation stack uses cost-maps to store information about the obstacles in the world.
 
@@ -246,12 +252,17 @@ Costmap common parameters:
 \item raytrace\_range[3.0]: This parameter determines the range to which we will raytrace freespace given a sensor reading. The robot will attempt to clear out space in front of it up to 3.0 meters away given a sensor reading.
 \item robot\_radius[0.11]: The robot radius is 11cm. It's used to avoid passing the robot through narrow places where it can get stuck.
 \item inflation\_radius[0.2]: The robot will treat all paths that stay 0.2 meters or more away from obstacles as having equal obstacle cost.
+\item observation\_sources[laser\_scan\_sensor]: defines a list of sensors that are going to be passing information to the costmap 
+\item laser\_scan\_sensor[sensor\_frame: hokuyo, data\_type: LaserScan, topic: \/robokoko\/laser\/scan, marking: true, clearing: true]: gives the details about the previous observation source.
 \end{itemize}
 
 The local costmap is used by the local planner to generate a short-term plan. The local costmap uses the odometry information rather than a map.
 
+In order to insert data from sensor sources into the costmap an extensive use of tf is used. Specifically, it assumes that all transforms between the coordinate frames specified by the global_frame parameter, the robot_base_frame parameter, and sensor sources are connected and up-to-date. 
+
 \begin{itemize}
-\item robot\_base\_frame: 
+\item global\_frame[odom]: The global frame for the costmap to operate in.
+\item robot\_base\_frame[robot\_footprint]: The name of the frame for the base link of the robot.
 \item update\_frequency[2]: The frequency, in Hz, at which the cost-map will run its update loop. 
 \item publish\_frequency[2]: The rate, in Hz, at which the cost-map will publish visualization information.
 \item width[20.0]: The cost-map's width.
@@ -265,7 +276,8 @@ The local costmap is used by the local planner to generate a short-term plan. Th
 The global costmap is used by the local planner to generate a long-term plan. The global costmap uses the map provided by the map\_server.
 
 \begin{itemize}
-\item robot\_base\_frame:
+\item global\_frame[map]: The global frame for the costmap to operate in.
+\item robot\_base\_frame[robot\_footprint]: The name of the frame for the base link of the robot. 
 \item update\_frequency[2]: The frequency, in Hz, at which the cost-map will run its update loop. 
 \item publish\_frequency[2]: The rate, in Hz, at which the cost-map will publish visualization information.
 \item width[40.0]: The cost-map's width.
