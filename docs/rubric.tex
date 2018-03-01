@@ -50,7 +50,7 @@ In the present work Kalman filter and Adaptative Monte Carlo have been evaluated
 
 They are both base on probability distribution of the states over measurements using a Bayes filter. 
 
-Adaptive Monte Carlo algorithm has been selected in order to solve the Localization problem. AMCL, a particle filter, has got so many advantages over other solutions: the error and noise does not need to follow a Gaussian distribution, the computational needs can be easily adapted, it is a very robust and fast algorithm.\cite{probabilisticrobotics}\cite{robustmontecarlo}
+Adaptive Monte Carlo algorithm has been selected in order to solve the Localization problem. AMCL, a particle filter, has got so many advantages over other solutions: the error and noise does not need to follow a Gaussian distribution, the computational needs can be easily adapted, it is a very robust and fast algorithm.\cite{probabilisticrobotics}\cite{robustmontecarlo}\cite{udacity}
 
 \subsection{Kalman Filters}
 
@@ -127,8 +127,8 @@ The model provided by Udacity is a 2W robot with two caster, one on the front an
 \end{figure}
 
 \begin{itemize}
-\item Chassis: a box of size ? x ? x ?.
-\item Wheels: two wheels ? x ? located in the front of the platform.
+\item Chassis: a box of size 40cm x 20cm x 1cm.
+\item Wheels: two wheels 1cm x 0.5cm located in the front of the platform.
 \item Casters: two caster one the back and another on the front.
 \item Lidar: a hokuyo lidar in the front.
 \item Camera: camera in the head of the platform
@@ -150,7 +150,7 @@ The model built from scratch consists in a 2W robot with a caster in the back to
 
 \begin{itemize}
 \item Chassis: a box of size 22cm x 10cm x 2cm.
-\item Wheels: two wheels 3cm x 3cm located in the front of the platform.
+\item Wheels: two wheels 0.3cm x 0.3cm located in the front of the platform.
 \item Back caster: one back caster in the back of the platform.
 \item Lidar: a hokuyo lidar in the front.
 \item Camera: camera in the front.
@@ -341,33 +341,19 @@ Even the robot is able to go to the final position in a reasonable time I have f
 \item After several test we can get the conclusion that both robots performance similarly.
 \item The robokoko is a little bit quicker due to its lightness.
 \item The AMCL localization can be used in scenarios where we have a map of the scene as for example for the robot to guide in a museum.
-\item Where would you use MCL/AMCL in an industry domain?
+\item The AMCL localization solutions can be used in the industrial domain to different kind of applications: smart robot to clean the floors, to carry out heavy loads, for entertainment etc...
 \end{itemize}
 
 \section{Conclusion / Future work}
-This section is intended to summarize your report. Your summary should include a recap of the results, did this project achieve what you attempted, how would you deploy it on hardware and how could this project be applied to commercial products? 
-For Future Work, address areas of work that you may not have addressed in your report as possible next steps. This could be due to time constraints, lack of currently developed methods / technology, and areas of application outside of your current implementation. Again, avoid the use of the first-person.
-
-\subsection{Modifications for Improvement}
-Examples:
-
-\begin{itemize}
-\item Base Dimension
-\item Sensor Location
-\item Sensor Layout
-\item Sensor Amount
-\end{itemize}
-
-\subsection{Hardware Deployment}
-
-\begin{enumerate}
-\item What would need to be done?
-\item Computation time/resource considerations?
-\end{enumerate}
 
 
+During this project a model of a robot has been built from scratch. All the parameters related to dimensions, mass, inertia and friction values have been set as much realistic as possible. Then, the amlc and navigation stack have been configured. All the more significant parameters have been adjusted in order to achieve a reasonable performance. As result, the robot can achieve the target position in a reasonable amount of time. 
 
-Probabilistic Robotics by Sebastian Thrun, Wolfram Burgard and Dieter Fox
+In order to obtain a better performance there are several things that can be done. The model can be optimized to provide to the robot more velocity. The parameters can be futher optimized to get to the goal in a shorter time. This work has not been done due a time restrictions, the project has got a dead line.
+
+Finally, it has been observed some limitations about the hardware where the solution was deployed. A analysis to define the hardware requirement should be done if the solution is intented to deploy in a real system.
+
+This solution can be adapted to be the base for a real application. For instance, a guide robot for a museum or the guide robot for the Gran Telescopio Canarias, the place where I work.
 
 \begin{thebibliography}{9}
 \bibliographystyle{ieeetr}
@@ -379,8 +365,10 @@ Sebastian Thrun, Wolfram Burgard, and Dieter Fox
 \bibitem{robustmontecarlo} 
 Sebastian Thrun, Dieter Fox , Wolfram Burgard , and Frank Dellaert
 \textit{Robust Monte Carlo Localization for Mobile Robots}. 
+
+\bibitem{udacity} 
+https://eu.udacity.com
+\textit{Robotics Software Engineer Nanodegree program}. 
+
 \end{thebibliography}
-
-
-
 \end{document}
