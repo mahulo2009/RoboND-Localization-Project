@@ -2,6 +2,7 @@
 
 \usepackage[pdftex]{graphicx}    
 \usepackage{cite}
+\usepackage{caption}
 \usepackage{subcaption}
 \usepackage{mathtools}
 \hyphenation{op-tical net-works semi-conduc-tor}
@@ -24,7 +25,7 @@ This project involves to accurately localize a mobile robot insided a provided m
 
 
 \begin{IEEEkeywords}
-Robot, Udacity, Monte Carlo Filter, Kalman Filter, Localization,ROS.
+Robot, Udacity, Monte Carlo Filter, Kalman Filter, Localization, Navigation,ROS.
 \end{IEEEkeywords}}
 
 
@@ -36,18 +37,20 @@ Robot, Udacity, Monte Carlo Filter, Kalman Filter, Localization,ROS.
 \label{sec:introduction}
 \IEEEPARstart{M}{obile} robot localization is the process to determine where a robot is located with respect to its environment. It is one of the fundamental parts required by a robot to achieve autonomous navigation.
 
-In its simplest form, position tracking, the initial robot pose is known and it is only necessary to correct incremental errors in the robot odometry. More challenging is the global localization problem, where the robot must determinate its initial pose by itself. Finally, in the kidnapped robot problem, the robot is tele-ported to other position without being told. The kidnapped problem can be used to teach the robot how to recover from a system fail, where the robot previous knowledge is complete lost.
+In its simplest form, position tracking, the initial robot pose is known and it is only necessary to correct incremental errors in the robot odometry. More challenging is the global localization problem, where the robot must determinate its pose by itself. Finally, in the kidnapped robot problem, the robot is tele-ported to other position without being told. The kidnapped problem can be used to teach the robot how to recover from a system fail, where the robot previous knowledge is complete lost.
 
 Localization can be used in so many applications ranging from robots to clean the floors to robot to explore other planets.
 
-The localization algorithms must overcome some difficulties like the errors in sensor measurement; like sensors to measure the distances in scene, and errors in the control. The algorithm used for the project use Bayesian probability to evaluate the probability of a hypothesis, where the robot is located, base on the observation of the environment.
+In the Localization problem a map of the world is provided and the robot must identify from the sensor reading where it is located in this map.
+
+The localization algorithms must overcome some difficulties like: the errors in odometry sensor measurement, error in sensors to measure the distances in scene, and errors in the control. The algorithm selected for the project uses Bayesian probability to evaluate the probability of a hypothesis, where the robot is located, base on the observation of the environment.
 
 \section{Background}
 In the present work Kalman filter and Adaptative Monte Carlo have been evaluated. 
 
 They are both base on probability distribution of the states over measurements using a Bayes filter. 
 
-Adaptive Monte Carlo algorithm has been selected in order to solve the Localization problem. AMCL, a particle filter, has got so many advantages over other solutions: the error and noise does not need to follow a Gaussian distribution, the computational needs can be easily adapted, it is a very robust and fast algorithm.\cite{lamport1994latex}
+Adaptive Monte Carlo algorithm has been selected in order to solve the Localization problem. AMCL, a particle filter, has got so many advantages over other solutions: the error and noise does not need to follow a Gaussian distribution, the computational needs can be easily adapted, it is a very robust and fast algorithm.\cite{probabilisticrobotics}\cite{robustmontecarlo}
 
 \subsection{Kalman Filters}
 
@@ -57,7 +60,7 @@ Kalman filter is an estimation algorithm used to estimate the value of a variabl
 
 Kalman filter can be used for local localization problem where both the odometry and movement contains a lot of noise and uncertain. The Kalman filter is continuously iterating two steps: measurement update where measurement is used to update the robot's position, and state prediction where the information about current state is used to predict the future pose. At the beginning an initial guess is used. After a few iterations the measurement converge to the real value.
 
-The Kalma filter assumes a Gaussian distribution of the noise an uncertain and it is only valid for linear system.
+The Kalma filter assumes a Gaussian distribution (1) of the noise an uncertain and it is only valid for linear system.
 
 \begin{align}
 P(x) = \frac{1}{{\sigma \sqrt {2\pi } }}e^{{{ - \left( {x - \mu } \right)^2 } \mathord{\left/ {\vphantom {{ - \left( {x - \mu } \right)^2 } {2\sigma ^2 }}} \right. \kern-\nulldelimiterspace} {2\sigma ^2 }}}
@@ -67,17 +70,19 @@ Nevertheless, a variation of the algorithm, Extended Kalman filter can be used f
 
 \subsection{Particle Filters}
 
-The Monte Carlo localization is the most popular Localization algorithm in robotics. It can solve the local an global localization problems. The robot will navigate inside a known map collecting information using range sensors. MCL uses these sensor measurement to keep track of the robot pose. 
+The Monte Carlo Localization is the most popular Localization algorithm in robotics. It can solve the local an global localization problems. The robot will navigate inside a known map collecting information using range sensors. MCL uses these sensor measurement to keep track of the robot pose. 
 
 In MCL a set of particles are initially spread randomly and uniformly throughout the entire map. These virtual particles represents the hypothesis of where the robot might be. In a 2D map, each particle has got a position , orientation and weight value. The importance of a particle depends on the weight, the bigger the more accurate and during the re-sampling process they are more likely to survive. After several iterations of the Monte Carlo algorithm the particles will converge and estimate the robot's pose.
 
-The MCL uses a Bayes filtering to estimate a probability density over the state space conditioned by the measurement, this probability density is called belief:
+The MCL uses a Bayes filtering to estimate a probability density over the state space conditioned by the measurement, this probability density is called belief (2)
 
 \begin{align}
 Bel(X{t}) = P(X{t} |Z{1}...{t} )
 \end{align}
 
-X{t} are the state of robot and Z are the measurement from time 1 up to time {t}. The belief is estimated recursively, the initial guess uses a randomly and uniformly distribution over the entire map.
+X{t} are the state of robot and Z are the measurement from time 1 up to time {t}. The belief is estimated recursively, the initial guess uses a randomly and uniformly distribution over the entire map. 
+
+
 
 The MCL has got two sections. In every iteration the algorithm takes: previous belief, the actuation commands and the sensor measurement as input. The hypothetical state is computed whenever the robot moves, the particles weight are computed using the latest sensor measurement. Secondly the particles with high probability, the ones that fetch better the measurement reading, will survive and the others will die. The algorithm will output the new belief of the next iteration. After few iterations the survivors particles will represent the real robot's pose.
 
@@ -87,7 +92,7 @@ The MCL has got two sections. In every iteration the algorithm takes: previous b
 MCL presents many advantages over EFK:
 
 \begin{itemize}
-\item MCL is easier to program than EFK 
+\item MCL is easier to program than EFK. 
 \item In the EFK algorithm the noise error and uncertain must follow a Gaussian distribution, MCL is not tied to the measure noise distribution.
 \item MCL can control the computational memory and resolution of the solution by changing the number of particles distributed.
 \end{itemize} 
@@ -98,7 +103,7 @@ In the present work MCL particle filter is going to be used.
 \section{Simulations}
 The simulation environment selected was Gazebo, connected to ROS a Rviz to visualize the performance of the solution. 
 
-ROS is a meta-operating system for robotic. It provides a broad collection of libraries, in the form of packages, that implement useful robot functionality. ROS provides publish-subscribe messaging infrastructure that allows easily integrate different package to implement the particular solution.
+ROS is a meta-operating system for robotic. It provides a broad collection of libraries, in the form of packages, that implements useful robot functionality. ROS provides publish-subscribe messaging infrastructure that allows easily integrate different package to implement the particular solution.
 
 The following sections will explain in details the robot's model, selected packages, and the parameter tunning to allow the robot to properly localize itself.
 
@@ -111,53 +116,27 @@ The following sections include the model design for each one, the package used t
 
 
 \subsubsection{Model design}
+
+
+
+
+
 The Robot's design considerations should include: the size of the robot, the layout of sensors. This information can be shown in the form of a chart / table.
 
-\begin{figure}
-    \centering
-    \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{robokoko-design-1}
-        \caption{A gull}
-        \label{fig:gull}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{robokoko-design-2}
-        \caption{A tiger}
-        \label{fig:tiger}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{robokoko-design-3}
-        \caption{A mouse}
-        \label{fig:mouse}
-    \end{subfigure}
-    \caption{Robot desing view}\label{fig:animals}
-\end{figure}
 
 
+\begin{itemize}
+\item Chassis:
+\item Wheels:
+\item Back caster:
+\item Lidar:
+\item Camera:
+\end{itemize}
 
 \subsection{Personal Model}
 
 \subsubsection{Model design}
 
-\begin{figure}
-    \centering
-    \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{robokoko-design-1}
-        \caption{A gull}
-        \label{fig:gull}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{robokoko-design-2}
-        \caption{A tiger}
-        \label{fig:tiger}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{robokoko-design-3}
-        \caption{A mouse}
-        \label{fig:mouse}
-    \end{subfigure}
-    \caption{Robot desing view}\label{fig:animals}
-\end{figure}
 
 \begin{itemize}
 \item Chassis:
@@ -170,12 +149,13 @@ The Robot's design considerations should include: the size of the robot, the lay
 \subsection{Packages Used}
 
 \begin{itemize}
-\item gazebo\_ros:
-\item rviz:
-\item map\_server:
-\item tf:
-\item amcl:
-\item move\_base: 
+\item gazebo: an application to simulate robots and the environment.
+\item gazebo\_ros: this package provides a collection of plugins that allows ROS to interact with Gazebo by using services and topics.
+\item rviz: it is a completely 3D visualization tool for ROS. It can subscribe to wide range of topic types to evaluate the performance of the solution.
+\item map\_server: it offers map data as a ROS service.
+\item tf: a package to keep track of multiple coordinate frames over time. It maintains the relationship between coordinate frames in a tree structure buffered in time.
+\item amcl: a probabilistic localization system for a robot moving in 2D. It implements the Adaptive Monte Carlo localization algorithm.
+\item move\_base: given a goal in the world will attempt to reach it with a mobile base. It links together a global and local planer, for the short-term and long-term planer respectively. In addition, it has got two costmaps, one for each planner, to generate n occupancy grid of the scene.
 \end{itemize}
 
 \subsection{Parameters}
@@ -247,7 +227,7 @@ Costmap common parameters:
 \item raytrace\_range[3.0]: This parameter determines the range to which we will raytrace freespace given a sensor reading. The robot will attempt to clear out space in front of it up to 3.0 meters away given a sensor reading.
 \item robot\_radius[0.11]: The robot radius is 11cm. It's used to avoid passing the robot through narrow places where it can get stuck.
 \item inflation\_radius[0.2]: The robot will treat all paths that stay 0.2 meters or more away from obstacles as having equal obstacle cost.
-\item observation\_sources[laser\_scan\_sensor]: defines a list of sensors that are going to be passing information to the costmap 
+\item observation\_sources[laser\_scan\_sensor]: defines a list of sensors that are going to be passing information to the costmap. 
 \item laser\_scan\_sensor[sensor\_frame: hokuyo, data\_type: LaserScan, topic: \/robokoko\/laser\/scan, marking: true, clearing: true]: gives the details about the previous observation source.
 \end{itemize}
 
@@ -293,12 +273,14 @@ This package provides implementations of the Trajectory Rollout and Dynamic Wind
 \item min\_vel\_x[0.1]: The minimum forward velocity allowed for the base in meters/sec.
 \item max\_vel\_theta[0.7]: The maximum rotational velocity allowed for the base in radians/sec.
 \item min\_vel\_theta[-0.7]: The minimum rotational velocity allowed for the base in radians/sec.
-\item acc\_lim\_x[0.6]: The x acceleration limit of the robot in meters/sec\^2.
-\item acc\_lim\_y[0.6]: The y acceleration limit of the robot in meters/sec\^2.
-\item acc\_lim\_theta[1.5]: The rotational acceleration limit of the robot in radians/sec\^2.
+\item acc\_lim\_x[0.6]: The x acceleration limit of the robot in meters/sec$^2$.
+\item acc\_lim\_y[0.6]: The y acceleration limit of the robot in meters/sec$^2$.
+\item acc\_lim\_theta[1.5]: The rotational acceleration limit of the robot in radians/sec$^2$.
 \end{itemize}
 
 \section{Results}
+
+
 Present an unbiased view of your robot's performance and justify your stance with facts. Do the localization results look reasonable? What is the duration for the particle filters to converge? How long does it take for the robot to reach the goal? Does it follow a smooth path to the goal? Does it have unexpected behavior in the process? \\
 For demonstrating your results, it is incredibly useful to have some watermarked charts, tables, and/or graphs for the reader to review. This makes ingesting the information quicker and easier.
 
@@ -345,7 +327,20 @@ Examples:
 
 
 
-\bibliography{bib}
+Probabilistic Robotics by Sebastian Thrun, Wolfram Burgard and Dieter Fox
+
+\begin{thebibliography}{9}
 \bibliographystyle{ieeetr}
+
+\bibitem{probabilisticrobotics} 
+Sebastian Thrun, Wolfram Burgard, and Dieter Fox
+\textit{Probabilistic Robotics}. 
+
+\bibitem{robustmontecarlo} 
+Sebastian Thrun, Dieter Fox , Wolfram Burgard , and Frank Dellaert
+\textit{Robust Monte Carlo Localization for Mobile Robots}. 
+\end{thebibliography}
+
+
 
 \end{document}
