@@ -117,33 +117,43 @@ The following sections include the model design for each one, the package used t
 
 \subsubsection{Model design}
 
+The model provided by Udacity is a 2W robot with two caster, one on the front and another on the back, to stabilise. A Lidar and a camera were added at the front, for the navigation stack. The inertial and friction parameters where adjusted in order to give a smooth movement to the robot.
 
-
-
-
-The Robot's design considerations should include: the size of the robot, the layout of sensors. This information can be shown in the form of a chart / table.
-
-
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.33]{udacity-design-2}
+\caption{Udacity design view.}
+\label{fig:mesh1}
+\end{figure}
 
 \begin{itemize}
-\item Chassis:
-\item Wheels:
-\item Back caster:
-\item Lidar:
-\item Camera:
+\item Chassis: a box of size ? x ? x ?.
+\item Wheels: two wheels ? x ? located in the front of the platform.
+\item Casters: two caster one the back and another on the front.
+\item Lidar: a hokuyo lidar in the front.
+\item Camera: camera in the head of the platform
 \end{itemize}
+
 
 \subsection{Personal Model}
 
 \subsubsection{Model design}
 
+The model built from scratch consists in a 2W robot with a caster in the back to stabilise. A Lidar and a camera were added at the front, for the navigation stack. The inertial and friction parameters where adjusted in order to give a smooth movement to the robot.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.3]{robokoko-design-2}
+\caption{Robokoko design view.}
+\label{fig:mesh2}
+\end{figure}
 
 \begin{itemize}
-\item Chassis:
-\item Wheels:
-\item Back caster:
-\item Lidar:
-\item Camera:
+\item Chassis: a box of size 22cm x 10cm x 2cm.
+\item Wheels: two wheels 3cm x 3cm located in the front of the platform.
+\item Back caster: one back caster in the back of the platform.
+\item Lidar: a hokuyo lidar in the front.
+\item Camera: camera in the front.
 \end{itemize}
 
 \subsection{Packages Used}
@@ -280,27 +290,57 @@ This package provides implementations of the Trajectory Rollout and Dynamic Wind
 
 \section{Results}
 
+In the first part of the project the robot model was created and an initial set-up of the packages was defined. In order to check how far the configuration was from the final solution, small demands to the robot's pose were sent using Rviz navigation tools.
 
-Present an unbiased view of your robot's performance and justify your stance with facts. Do the localization results look reasonable? What is the duration for the particle filters to converge? How long does it take for the robot to reach the goal? Does it follow a smooth path to the goal? Does it have unexpected behavior in the process? \\
-For demonstrating your results, it is incredibly useful to have some watermarked charts, tables, and/or graphs for the reader to review. This makes ingesting the information quicker and easier.
+This was the approaches used in order to get the final result:
+\begin{enumerate}
+\item The correct odometry of the robot was checked by sending basic commands, without amcl package in execution, to move: forward, backward an in circles. The inertial and friction parameters were adjusted in the robot model to avoid erratic movements. 
+\item Some parameters related to the computer power limitation were adjusted in order to solve control loop problems: number of particles, transform tolerances, update and publish frequencies.
+\item The robot was sent to the final goal position. The amcl parameters related to the odometry, the costmap parameters related to the inflation, robot radios were adjusted in order to navigate smoohtly, without getting stuck and detecting correctly the obstacles.  
+\end{enumerate}	
 
 \subsection{Localization Results}
 \subsubsection{Benchmark}
+
+After adjusting these parameters the udacity robot was able to get to the goal position in a reasonable time, two minutes approximately. The particles filter converges in few second, this can be visualized using the rviz tool and the robot follows a smooth path to the goal. The experiment was repeated several times and in some occasions the robot get stuck in the corners of the obstacles in the map. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.25]{rviz-robot-udacity-goal-position}
+\caption{Udacity final goal position}
+\label{fig:mesh3}
+\end{figure}
+
 \subsubsection{Student}
 
+Similar result was obtained by the robokoko robot. The particle filter converges, the robot follows a smooth path and the robot goes to the goal position.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.3]{rviz-robot-own-goal-position}
+\caption{Robokoko final goal position}
+\label{fig:mesh4}
+\end{figure}
+
 \subsection{Technical Comparison} % only facts
-Discuss the difference of the layout, parameters, performance etc. between the benchmark robot and your robot. It is acceptable for your custom robot to perform worse than the provided robot. The focus is on learning and understanding, not performance. 
+
+The robokoko robot is quite similar to the udacity robot. The main difference is that the robokoko robot is lighter. This allows the robot to move quicker. The same parameters were used for both the udacity and robokoko robots. 
 
 \section{Discussion}
-This is the only section of the report where you may include your opinion. However, make sure your opinion is based on facts. If your robot performed poorly, make mention of what may be the underlying issues. If the robot runs well, which aspects contribute to that? Again, avoid writing in the first person (i.e. Do not use words like "I" or "me"). If you really find yourself struggling to avoid the word "I" or "me"; sometimes, this can be avoid with the use of the word “one”. As an example: instead of : "I think the robot cannot localize itself because the sensor does not provide enough information for localization" try: "one may believe the localization performance is poor because the sensor layout is not able to provide enough information for localization". They say the same thing, but the second avoids the first person. 
+
+Even the robot is able to go to the final position in a reasonable time I have found two problems that have space for improvement:
+
+\begin{enumerate}
+\item Sometime the head of the robot swings producing the Lidar to measure the floor as an obstacle. The back caster weight was increased and the acceleration maximum and minimum was reduced. This still happens from time to time and it produces the effect to identify as obstacle the floor by the local planner. More research is necessary.
+\item There are some parameters in the local planner, related to the cost-map, that are producing the robot to get stuck in the corners of the obstacles from time to time. The robot recover from this situation but a it is necessary to investigate a more robust solution.
+\end{enumerate}	
 
 \subsection{Topics}
 
 \begin{itemize}
-\item Which robot performed better?
-\item Why it performed better? (opinion)
-\item How would you approach the 'Kidnapped Robot' problem?
-\item What types of scenario could localization be performed?
+\item After several test we can get the conclusion that both robots performance similarly.
+\item The robokoko is a little bit quicker due to its lightness.
+\item The AMCL localization can be used in scenarios where we have a map of the scene as for example for the robot to guide in a museum.
 \item Where would you use MCL/AMCL in an industry domain?
 \end{itemize}
 
