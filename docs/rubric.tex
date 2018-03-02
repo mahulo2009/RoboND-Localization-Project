@@ -175,8 +175,8 @@ The model built from scratch consists in a 2W robot with a caster in the back to
 The following configuration parameters were chosen due to power limitations of the computer where packages were deployed, increasing this values may produced a better performance.
 
 \begin{itemize}
-\item min\_particles[100]: Minimum allowed number of particles spread around the scene.
-\item max\_particles[5000]: Maximum allowed number of particles spread around the scene. 
+\item min\_particles[1000]: Minimum allowed number of particles spread around the scene.
+\item max\_particles[6000]: Maximum allowed number of particles spread around the scene. 
 \item transform\_tolerance[0.5]: It is used to make a transformation valid in the future in order to cover lag in the system. Reducing this value improve performance but it is necessary to have computer power enough.
 \item gui\_publish\_rate[1]: Maximum rate (Hz) at which scans and paths are published for visualization.
 \end{itemize}
@@ -302,7 +302,7 @@ This was the approaches used in order to get the final result:
 \subsection{Localization Results}
 \subsubsection{Benchmark}
 
-After adjusting these parameters the udacity robot was able to get to the goal position in a reasonable time, two minutes approximately. The particles filter converges in few second, this can be visualized using the rviz tool and the robot follows a smooth path to the goal. The experiment was repeated several times and in some occasions the robot get stuck in the corners of the obstacles in the map. 
+After adjusting these parameters the udacity robot was able to get to the goal position in a reasonable time, two minutes approximately. Two minutes is  good solution taking into account the limitation and dead lines of the project. A finer adjustment of the parameters can probably give a better solution, less than a minute.. The particles filter converges in few second, this can be visualized using the rviz tool and the robot follows a smooth path to the goal. The experiment was repeated several times and in some occasions the robot get stuck in the corners of the obstacles in the map. 
 
 \begin{figure}[h]
 \centering
