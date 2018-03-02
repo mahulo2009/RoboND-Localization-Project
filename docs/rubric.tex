@@ -342,6 +342,7 @@ Even the robot is able to go to the final position in a reasonable time I have f
 \item The robokoko is a little bit quicker due to its lightness.
 \item The AMCL localization can be used in scenarios where we have a map of the scene as for example for the robot to guide in a museum.
 \item The AMCL localization solutions can be used in the industrial domain to different kind of applications: smart robot to clean the floors, to carry out heavy loads, for entertainment etc...
+\item  In order to resolve the kidnapped problem using AMCL two problems must be overcome: the kidnapped robot must be detected and them there must be a way to recover.  The kidnapped event can be detected based on robot’s sensor reading and the displacement  between two consecutive reading \cite{kidnapped}.  In addition, the recover from the kidnapped problem a feature matching strategy can be used marking the scene with some fiducial markers.\cite{kidnappedrecover} 
 \end{itemize}
 
 \section{Conclusion / Future work}
@@ -369,6 +370,16 @@ Sebastian Thrun, Dieter Fox , Wolfram Burgard , and Frank Dellaert
 \bibitem{udacity} 
 https://eu.udacity.com
 \textit{Robotics Software Engineer Nanodegree program}. 
+
+\bibitem{kidnapped} 
+Iksan Bukhori and Zool Hilmi Ismail
+\textit{Detection of kidnapped robot problem in Monte Carlo localization based on the natural displacement of the robot}. 
+
+\bibitem{kidnappedrecover} 
+Lei Wei
+\textit{A Feature-based Solution for Kidnapped Robot Problem}. 
+
+
 
 \end{thebibliography}
 \end{document}
